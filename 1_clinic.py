@@ -47,7 +47,6 @@ class Database:
         records = self.dbCursor.fetchall()
         return records
 
-
 class Values:
     def Validate(self, id, firstname, lastname, contactNumber):
         if not (id.isdigit() and (len(id) == 3)):
@@ -60,7 +59,6 @@ class Values:
             return "contactNumber"
         else:
             return "SUCCESS"
-
 
 class InsertWindow:
     def __init__(self):
@@ -193,8 +191,6 @@ class InsertWindow:
         self.notesEntry.delete(0, tkinter.END)
         self.amountEntry.delete(0, tkinter.END)
         
-
-
 class UpdateWindow:
     def __init__(self, id):
         self.window = tkinter.Tk()
@@ -316,9 +312,7 @@ class UpdateWindow:
         self.bloodListBox.grid(pady=5, column=3, row=11)
 
 
-        #self, id, firstname, lastname, dateOfBirth, monthOfBirth, yearOfBirth, gender, 
-        #address, contactNumber, bloodType, history, symptom, rubric, medicine, notes, amount
-
+        
         
         # Button
         tkinter.Button(self.window, width=10, fg=fg_color, bg=bg_color, font=("times new roman", 10, "bold"),
