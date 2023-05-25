@@ -37,7 +37,7 @@ class Database:
         self.dbConnection.close()
 
     def Insert(self, id, firstname, lastname, dateOfBirth, monthOfBirth, yearOfBirth, gender, address, contactNumber, bloodType, symptom, rubric, medicine, notes, amount):
-        self.dbCursor.execute("INSERT INTO patient_table VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (
+        self.dbCursor.execute("INSERT INTO patient_table VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (
         id, firstname, lastname, dateOfBirth, monthOfBirth, yearOfBirth, gender, address, contactNumber, bloodType,  symptom, rubric, medicine, notes, amount))
         self.dbConnection.commit()
 
@@ -122,6 +122,7 @@ class InsertWindow:
 
         self.doctor_frame = tkinter.LabelFrame(self.frame)
         self.doctor_frame.grid(row=2, column=0, padx=20, pady=10)
+
 
         # Variables
         self.firstname = tkinter.StringVar()
@@ -236,11 +237,13 @@ class InsertWindow:
         self.test = self.values.Validate(self.firstnameEntry.get(), self.lastnameEntry.get(),self.contactNumberEntry.get())
 
         if self.test == "SUCCESS":
-            self.database.Insert(generated_id, self.firstnameEntry.get(), self.lastnameEntry.get(), self.dateOfBirthBox.get(),
-                                 self.monthOfBirthBox.get(), self.yearOfBirthBox.get(), self.genderBox.get(),
-                                 self.addressEntry.get(), self.contactNumberEntry.get(), self.bloodListBox.get(),
-                                 self.symptomEntry.get(), self.rubricEntry.get(),
-                                 self.medicineEntry.get(), self.notesEntry.get(), self.amountEntry.get())
+            self.database.Insert(
+                                generated_id, self.firstnameEntry.get(), self.lastnameEntry.get(),
+                                self.dateOfBirthBox.get(), self.monthOfBirthBox.get(), self.yearOfBirthBox.get(),
+                                self.genderBox.get(), self.addressEntry.get(), self.contactNumberEntry.get(),
+                                self.bloodListBox.get(), self.symptomEntry.get(), self.rubricEntry.get(),
+                                self.medicineEntry.get(), self.notesEntry.get("1.0", tkinter.END), self.amountEntry.get()
+    )
             tkinter.messagebox.showinfo("Inserted data", "Successfully inserted the above data in the database")
         else:
             self.valueErrorMessage = "Invalid input in field " + self.test
@@ -266,8 +269,7 @@ class InsertWindow:
         self.genderBox.set("")
         self.addressEntry.delete(0, tkinter.END)
         self.contactNumberEntry.delete(0, tkinter.END)
-        self.bloodListBox.set("")
-        
+        self.bloodListBox.set("")  
         self.symptomEntry.delete(0, tkinter.END)
         self.rubricEntry.delete(0, tkinter.END)
         self.medicineEntry.delete(0, tkinter.END)
