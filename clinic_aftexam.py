@@ -1,6 +1,4 @@
-# Mini Project 
-#Update not working
-
+# Mini Project
 import tkinter
 import tkinter.ttk
 import tkinter.messagebox
@@ -11,6 +9,18 @@ from reportlab.pdfgen import canvas
 from docx import Document
 from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
+from tkinter import filedialog
+import pandas as pd
+
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from reportlab.platypus import SimpleDocTemplate, Paragraph
+
+from PIL import ImageColor
+import tkinter as tk
+
+
+
 
 
 def center_window(window, width, height):
@@ -115,7 +125,7 @@ class InsertWindow:
         self.window = tkinter.Tk()
         self.window.wm_title("Insert Patient Data")
         self.window.geometry("800x600")
-        bg_color = "Blue"
+        bg_color = "DodgerBlue"
         fg_color = "white"
 
         # Frame setup
@@ -315,20 +325,20 @@ class UpdateClass:
 
         if record:
             
-            firstname = record[0][1]
-            lastname = record[0][2]
-            dateOfBirth = record[0][3]
-            monthOfBirth = record[0][4]
-            yearOfBirth = record[0][5]
-            gender = record[0][6]
-            address = record[0][7]
-            contact = record[0][8]
-            blood = record[0][9]
-            symptom = record[0][10]
-            rubric = record[0][11]
-            medicine = record[0][12]
-            notes = record[0][13]
-            amount = record[0][14]
+            firstname_val = record[0][1]
+            lastname_val = record[0][2]
+            dateOfBirth_val = record[0][3]
+            monthOfBirth_val = record[0][4]
+            yearOfBirth_val = record[0][5]
+            gender_val = record[0][6]
+            address_val = record[0][7]
+            contact_val = record[0][8]
+            blood_val = record[0][9]
+            symptom_val = record[0][10]
+            rubric_val = record[0][11]
+            medicine_val = record[0][12]
+            notes_val = record[0][13]
+            amount_val = record[0][14]
         else:
             tkinter.messagebox.showinfo("Error", "Record not found")
 
@@ -354,15 +364,15 @@ class UpdateClass:
 
         # Variables
         self.id = tkinter.StringVar()
-        self.firstname = tkinter.StringVar()
-        self.lastname = tkinter.StringVar()
-        self.address = tkinter.StringVar()
-        self.contactNumber = tkinter.StringVar()
-        self.symptom = tkinter.StringVar()
-        self.rubric = tkinter.StringVar()
-        self.notes = tkinter.StringVar()
-        self.medicine = tkinter.StringVar()
-        self.amount = tkinter.StringVar()
+        self.firstname = tkinter.StringVar(value=firstname_val)
+        self.lastname = tkinter.StringVar(value=lastname_val)
+        self.address = tkinter.StringVar(value=address_val)
+        self.contactNumber = tkinter.StringVar(value=contact_val)
+        self.symptom = tkinter.StringVar(value=symptom_val)
+        self.rubric = tkinter.StringVar(value=rubric_val)
+        self.notes = tkinter.StringVar(value=notes_val)
+        self.medicine = tkinter.StringVar(value=medicine_val)
+        self.amount = tkinter.StringVar(value=amount_val)
 
         # self.id.set(row_id)
 
@@ -440,37 +450,39 @@ class UpdateClass:
             widget.grid_configure(padx=10, pady=5)
 
         self.firstnameEntry.delete(0, tkinter.END)
-        self.firstnameEntry.insert(0, firstname)
+        self.firstnameEntry.insert(0, firstname_val)
 
         self.lastnameEntry.delete(0, tkinter.END)
-        self.lastnameEntry.insert(0, lastname)
+        self.lastnameEntry.insert(0, lastname_val)
 
         self.addressEntry.delete(0, tkinter.END)
-        self.addressEntry.insert(0, address)
+        self.addressEntry.insert(0, address_val)
+       
 
         self.contactNumberEntry.delete(0, tkinter.END)
-        self.contactNumberEntry.insert(0, contact)
+        self.contactNumberEntry.insert(0, contact_val)
 
         self.symptomEntry.delete(0, tkinter.END)
-        self.symptomEntry.insert(0, symptom)
+        self.symptomEntry.insert(0, symptom_val)
+        
 
         self.rubricEntry.delete(0, tkinter.END)
-        self.rubricEntry.insert(0, rubric)
+        self.rubricEntry.insert(0, rubric_val)
 
         self.medicineEntry.delete(0, tkinter.END)
-        self.medicineEntry.insert(0, medicine)
+        self.medicineEntry.insert(0, medicine_val)
 
         self.notesEntry.delete("1.0", tkinter.END)
-        self.notesEntry.insert(tkinter.END, notes)
-
+        self.notesEntry.insert(tkinter.END, notes_val)
+        
         self.amountEntry.delete(0, tkinter.END)
-        self.amountEntry.insert(0, amount)
+        self.amountEntry.insert(0, amount_val)
 
-        self.genderBox.set(gender)
-        self.dateOfBirthBox.set(dateOfBirth)
-        self.monthOfBirthBox.set(monthOfBirth)
-        self.yearOfBirthBox.set(yearOfBirth)
-        self.bloodListBox.set(blood)
+        self.genderBox.set(gender_val)
+        self.dateOfBirthBox.set(dateOfBirth_val)
+        self.monthOfBirthBox.set(monthOfBirth_val)
+        self.yearOfBirthBox.set(yearOfBirth_val)
+        self.bloodListBox.set(blood_val)
 
         
         # Button widgets
@@ -520,17 +532,20 @@ class UpdateClass:
         monthOfBirth= self.monthOfBirthBox.get()
         yearOfBirth = self.yearOfBirthBox.get()
         blood_group = self.bloodListBox.get()
-        address = self.address.get()
-        contact_number = self.contactNumber.get()
-        symptoms = self.symptom.get()
-        rubric = self.rubric.get()
-        notes = self.notes.get()
-        medicine = self.medicine.get()
-        amount = self.amount.get()
+        address = self.addressEntry.get()
+        contact_number = self.contactNumberEntry.get()
+        symptoms = self.symptomEntry.get()
+        rubric = self.rubricEntry.get()
+        notes = self.notesEntry.get("1.0", tkinter.END)
+        medicine = self.medicineEntry.get()
+        amount = self.amountEntry.get()
+
+        
 
         # Update the data in the database
+
         database = Database()
-        database.Update(firstname, lastname, dateOfBirth, monthOfBirth, yearOfBirth, gender, address, contact_number,blood_group, id, symptoms, rubric, medicine, notes, amount)
+        database.Update(firstname, lastname, dateOfBirth, monthOfBirth, yearOfBirth, gender, address, contact_number, blood_group, id, symptoms, rubric, medicine, notes, amount)
 
         # Display success message
         tkinter.messagebox.showinfo("Success", "Data updated successfully.")
@@ -556,6 +571,8 @@ class SearchDeleteWindow:
         tkinter.Label(self.window, text=self.heading, width=50).grid(pady=20, row=1)
         tkinter.Label(self.window, text="First Name", width=10).grid(pady=5, row=2)
         tkinter.Label(self.window, text="Last Name", width=10).grid(pady=5, row=3)
+        
+
 
         self.firstnameEntry = tkinter.Entry(self.window, width=20, textvariable=self.firstname)
         self.lastnameEntry = tkinter.Entry(self.window, width=20, textvariable=self.lastname)
@@ -595,8 +612,12 @@ class DatabaseView:
         self.databaseViewWindow.geometry("1200x600")
         self.databaseViewWindow.wm_title("Database View")
 
+        # Set the background color
+        self.databaseViewWindow.configure(bg="LightSteelBlue1")
+
         # Label widget
-        tkinter.Label(self.databaseViewWindow, text="+ DATABASE VIEW +", width=25).pack(pady=5)
+        heading_label = tkinter.Label(self.databaseViewWindow, text="+ DATABASE VIEW +",bg="LightSteelBlue1", font=("Arial", 16), width=25)
+        heading_label.pack(pady=5)
 
         # Create a frame for the treeview
         self.tree_frame = tkinter.Frame(self.databaseViewWindow)
@@ -686,39 +707,66 @@ class DatabaseView:
         # Reverse the sorting order for the next click
         self.databaseView.heading(column, command=lambda: self.sort_column(column, not reverse))
 
+
     def generate_pdf(self, values):
-        # Create the PDF document
-        pdf = canvas.Canvas(r"C:\Users\joshi\Desktop\pdfs\patient_report.pdf")
+        # Ask the user for the download location
+        file_path = tkinter.filedialog.asksaveasfilename(defaultextension=".pdf")
+        if not file_path:
+            # User canceled the save dialog
+            return
 
-        # Set the font and font size
-        pdf.setFont("Helvetica", 12)
+        # Set up the document
+        doc = SimpleDocTemplate(file_path, pagesize=letter)
+        styles = getSampleStyleSheet()
+        content = []
 
-        # Set the y position for the first line
-        y_position = 750
+        # Add the report title
+        title = Paragraph("<b>Patient Report</b>", styles["Title"])
+        content.append(title)
 
-        # Write the data to the PDF
-        pdf.drawString(50, y_position, f"ID: {str(values[0])}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Name: {values[1]} {values[2]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"DOB: {values[3]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Gender: {values[6]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Symptoms: {values[10]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Rubrics: {values[11]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Medicine: {values[12]}")
-        y_position -= 20
-        pdf.drawString(50, y_position, f"Notes: {values[13]}")
+        # Add the current date
+        current_date = date.today().strftime("%B %d, %Y")
+        date_label_style = ParagraphStyle("DateLabelStyle", parent=styles["Normal"], alignment=1)  # Center alignment
+        date_label = Paragraph(current_date, date_label_style)
+        content.append(date_label)
 
-        # Save the PDF document
-        pdf.save()
+        # Add doctor's information
+        doctor_name = "Dr. Deepa Joshi"
+        credentials = "Homeopath"
+        clinic_address = "123 Main Street, City"
+        phone_number = "123-456-7890"
+
+        doctor_info = [
+            ("Doctor:", doctor_name),
+            ("Credentials:", credentials),
+            ("Clinic Address:", clinic_address),
+            ("Phone Number:", phone_number)
+        ]
+        doctor_info_style = ParagraphStyle("DoctorInfoStyle", parent=styles["Normal"], alignment=2)  # Right alignment
+        for label, value in doctor_info:
+            value_text = Paragraph(str(value), doctor_info_style)  # Use the custom style for right alignment
+            content.append(value_text)
+
+        # Add patient data
+        data_labels = ["ID:", "Name:", "DOB:", "Gender:", "Symptoms:", "Rubrics:", "Medicine:", "Notes:"]
+        data_values = [str(values[0]), f"{values[1]} {values[2]}", str(values[3]), values[6], values[10], values[11], values[12], values[13]]  # Convert integer values to strings
+
+        for label, value in zip(data_labels, data_values):
+            label_text = Paragraph(f"<b>{label}</b>", styles["Normal"])
+            value_text = Paragraph(str(value), styles["Normal"])
+            content.append(label_text)
+            content.append(value_text)
+
+        # Add signature space for the doctor
+        signature_label_style = ParagraphStyle("SignatureLabelStyle", parent=styles["Normal"], alignment=0)  # Left alignment
+        signature_label = Paragraph("<b>Doctor's Signature:</b>", signature_label_style)
+        content.append(signature_label)
+
+        # Build the PDF document
+        doc.build(content)
 
         # Provide feedback to the user
         tkinter.messagebox.showinfo("PDF Created", "The PDF report has been created successfully.")
-
 
 
     def on_row_selected(self, event):
@@ -917,6 +965,7 @@ class HomePage:
         search_button = tkinter.Button(self.homePageWindow, width=20, text="Search Patients", font=font, command=self.Search, bg='#2196f3', fg='#fff', borderwidth=0)
         delete_button = tkinter.Button(self.homePageWindow, width=20, text="Delete Patient", font=font, command=self.Delete, bg='#2196f3', fg='#fff', borderwidth=0)
         display_button = tkinter.Button(self.homePageWindow, width=20, text="Display Patients", font=font, command=self.Display, bg='#2196f3', fg='#fff', borderwidth=0)
+        download_button = tkinter.Button(self.homePageWindow, width=20, text="Download Database", font=font, command=self.DownloadDatabase, bg='#2196f3', fg='#fff', borderwidth=0)
         exit_button = tkinter.Button(self.homePageWindow, width=20, text="Exit", font=font, command=self.homePageWindow.destroy, bg='#2196f3', fg='#fff', borderwidth=0)
 
         # Place buttons in a grid layout
@@ -925,6 +974,7 @@ class HomePage:
         search_button.pack(pady=10)
         delete_button.pack(pady=10)
         display_button.pack(pady=10)
+        download_button.pack(pady=10)
         exit_button.pack(pady=10)
 
         self.homePageWindow.mainloop()
@@ -953,6 +1003,18 @@ class HomePage:
         self.database = Database()
         self.data = self.database.Display()
         self.displayWindow = DatabaseView(self.data)    
+
+    def DownloadDatabase(self):
+        file_path = filedialog.asksaveasfilename(defaultextension=".xlsx")
+        if file_path:
+            self.database = Database()
+            data = self.database.Display()
+            df = pd.DataFrame(data, columns=["ID", "First Name", "Last Name", "Date of Birth", "Month of Birth", "Year of Birth",
+                                             "Gender", "Address", "Contact Number", "Blood Type", "Symptom", "Rubric",
+                                             "Medicine", "Notes", "Amount"])
+            df.to_excel(file_path, index=False)
+            tkinter.messagebox.showinfo("Download Complete", "The database has been downloaded successfully.")
+    
 
 
 HomePage = HomePage()
