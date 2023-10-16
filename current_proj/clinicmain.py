@@ -950,6 +950,7 @@ class UpdateDataView:
             row_id = data[0]  # Assuming the ID is the first column in the data
             self.updateWindow = UpdateClass(row_id)
 
+
 class AuthenticationWindow:
     
     def __init__(self):
@@ -962,24 +963,24 @@ class AuthenticationWindow:
         title_label = tkinter.Label(self.auth_window, text="CLINIC LOGIN PAGE", font=("Arial", 18, "bold"), fg="#333", bg='#F8F8F8')
         title_label.pack(pady=10)
 
-        title_label = tkinter.Label(self.auth_window, text="Please login with credentials.", font=("Arial", 14, "bold"), fg="#333", bg='#F8F8F8')
+        title_label = tkinter.Label(self.auth_window, text="Please login with credentials.", font=("Arial", 14), fg="#333", bg='#F8F8F8')
         title_label.pack(pady=20,padx=20)
 
         # Username Label and Entry
-        self.username_label = tkinter.Label(self.auth_window, text="Username:", font=("Arial", 12))
-        self.username_label.pack()
+        self.username_label = tkinter.Label(self.auth_window, text="Username :                         ", font=("Arial", 12))
+        self.username_label.pack(pady=10,padx=10)
         self.username_entry = tkinter.Entry(self.auth_window, font=("Arial", 12))
         self.username_entry.pack()
 
         # Password Label and Entry
-        self.password_label = tkinter.Label(self.auth_window, text="Password:", font=("Arial", 12))
-        self.password_label.pack()
+        self.password_label = tkinter.Label(self.auth_window, text="Password :                         ", font=("Arial", 12))
+        self.password_label.pack(pady=10,padx=10)
         self.password_entry = tkinter.Entry(self.auth_window, show="*", font=("Arial", 12))  # Passwords should be masked
         self.password_entry.pack()
 
         # Login Button
-        self.login_button = tkinter.Button(self.auth_window, text="Login", command=self.check_credentials, font=("Arial", 12))
-        self.login_button.pack(pady=10)
+        self.login_button = tkinter.Button(self.auth_window, text="LOGIN", command=self.check_credentials, font=("Arial", 12), bg='#2196f3', fg='#fff')
+        self.login_button.pack(pady=20, padx=20)
 
         # Set the login trials limit
         self.login_trials = 3
