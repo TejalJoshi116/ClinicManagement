@@ -950,6 +950,40 @@ class UpdateDataView:
             self.updateWindow = UpdateClass(row_id)
 
 
+class AuthenticationWindow:
+    
+    def __init__(self):
+        self.auth_window = tkinter.Tk()
+        self.auth_window.title("Login")
+        self.auth_window.geometry("300x150")
+        self.auth_window.config(bg='#F8F8F8')
+
+        self.username_label = tkinter.Label(self.auth_window, text="Username:")
+        self.username_label.pack()
+        self.username_entry = tkinter.Entry(self.auth_window)
+        self.username_entry.pack()
+
+        self.password_label = tkinter.Label(self.auth_window, text="Password:")
+        self.password_label.pack()
+        self.password_entry = tkinter.Entry(self.auth_window, show="*")  # Passwords should be masked
+        self.password_entry.pack()
+
+        self.login_button = tkinter.Button(self.auth_window, text="Login", command=self.check_credentials)
+        self.login_button.pack()
+
+    def check_credentials(self):
+        username = self.username_entry.get()
+        password = self.password_entry.get()
+
+        # Add your authentication logic here (e.g., check if the username and password are correct)
+        if username == "DrDeepa" and password == "12345":  # Replace with your actual authentication logic
+            self.auth_window.destroy()
+            self.open_home_page()
+        else:
+            tkinter.messagebox.showerror("Authentication Failed", "Invalid username or password")
+
+    def open_home_page(self):
+        self.home_page = HomePage()
 
 class HomePage:
     
@@ -1021,6 +1055,8 @@ class HomePage:
     
 
 
-HomePage = HomePage()
+# HomePage = HomePage()
+auth_window = AuthenticationWindow()
+auth_window.auth_window.mainloop()
 
 
