@@ -954,13 +954,16 @@ class AuthenticationWindow:
     
     def __init__(self):
         self.auth_window = tkinter.Tk()
-        self.auth_window.title("Login to Patient Database")
-        self.auth_window.geometry("600x300")
+        self.auth_window.title("Patient Database")
+        self.auth_window.geometry("600x400")
         self.auth_window.config(bg='#F8F8F8')
 
         # Title Label
-        title_label = tkinter.Label(self.auth_window, text="Login to Patient Database", font=("Arial", 16, "bold"), fg="#333", bg='#F8F8F8')
+        title_label = tkinter.Label(self.auth_window, text="CLINIC LOGIN PAGE", font=("Arial", 18, "bold"), fg="#333", bg='#F8F8F8')
         title_label.pack(pady=10)
+
+        title_label = tkinter.Label(self.auth_window, text="Please login with credentials.", font=("Arial", 14, "bold"), fg="#333", bg='#F8F8F8')
+        title_label.pack(pady=20,padx=20)
 
         # Username Label and Entry
         self.username_label = tkinter.Label(self.auth_window, text="Username:", font=("Arial", 12))
