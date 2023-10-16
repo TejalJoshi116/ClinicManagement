@@ -23,6 +23,7 @@ import tkinter as tk
 
 
 
+
 def center_window(window, width, height):
     # Retrieve the screen width and height
     screen_width = window.winfo_screenwidth()
@@ -949,27 +950,36 @@ class UpdateDataView:
             row_id = data[0]  # Assuming the ID is the first column in the data
             self.updateWindow = UpdateClass(row_id)
 
-
 class AuthenticationWindow:
     
     def __init__(self):
         self.auth_window = tkinter.Tk()
-        self.auth_window.title("Login")
-        self.auth_window.geometry("300x150")
+        self.auth_window.title("Login to Patient Database")
+        self.auth_window.geometry("600x300")
         self.auth_window.config(bg='#F8F8F8')
 
-        self.username_label = tkinter.Label(self.auth_window, text="Username:")
+        # Title Label
+        title_label = tkinter.Label(self.auth_window, text="Login to Patient Database", font=("Arial", 16, "bold"), fg="#333", bg='#F8F8F8')
+        title_label.pack(pady=10)
+
+        # Username Label and Entry
+        self.username_label = tkinter.Label(self.auth_window, text="Username:", font=("Arial", 12))
         self.username_label.pack()
-        self.username_entry = tkinter.Entry(self.auth_window)
+        self.username_entry = tkinter.Entry(self.auth_window, font=("Arial", 12))
         self.username_entry.pack()
 
-        self.password_label = tkinter.Label(self.auth_window, text="Password:")
+        # Password Label and Entry
+        self.password_label = tkinter.Label(self.auth_window, text="Password:", font=("Arial", 12))
         self.password_label.pack()
-        self.password_entry = tkinter.Entry(self.auth_window, show="*")  # Passwords should be masked
+        self.password_entry = tkinter.Entry(self.auth_window, show="*", font=("Arial", 12))  # Passwords should be masked
         self.password_entry.pack()
 
-        self.login_button = tkinter.Button(self.auth_window, text="Login", command=self.check_credentials)
-        self.login_button.pack()
+        # Login Button
+        self.login_button = tkinter.Button(self.auth_window, text="Login", command=self.check_credentials, font=("Arial", 12))
+        self.login_button.pack(pady=10)
+
+        # Set the login trials limit
+        self.login_trials = 3
 
     def check_credentials(self):
         username = self.username_entry.get()
@@ -980,11 +990,17 @@ class AuthenticationWindow:
             self.auth_window.destroy()
             self.open_home_page()
         else:
-            tkinter.messagebox.showerror("Authentication Failed", "Invalid username or password")
+            self.login_trials -= 1
+            if self.login_trials > 0:
+                remaining_attempts = f"{self.login_trials} {'trial' if self.login_trials == 1 else 'trials'}"
+                tkinter.messagebox.showerror("Authentication Failed", f"Invalid username or password. {remaining_attempts} remaining.")
+            else:
+                tkinter.messagebox.showerror("Authentication Failed", "Security threat: Maximum login trials reached. Please try again later.")
+                self.auth_window.destroy()
 
     def open_home_page(self):
         self.home_page = HomePage()
-
+        
 class HomePage:
     
     def __init__(self):
