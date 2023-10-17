@@ -23,7 +23,6 @@ import tkinter as tk
 
 
 
-
 def center_window(window, width, height):
     # Retrieve the screen width and height
     screen_width = window.winfo_screenwidth()
@@ -290,16 +289,9 @@ class InsertWindow:
 
 
 
-        # connection = sqlite3.connect("clinicdb.db")
-        # cursor = connection.cursor()
-        # cursor.execute("SELECT MAX(id) FROM patient_table")
-        # result = cursor.fetchone()[0]
-        # if result is not None:
-        #     return int(result) + 1
-        # else:
-        #     return 1
+        
     def Reset(self):
-        # self.idEntry.delete(0, tkinter.END)
+        
         self.firstnameEntry.delete(0, tkinter.END)
         self.lastnameEntry.delete(0, tkinter.END)
         self.dateOfBirthBox.set("")
@@ -614,7 +606,7 @@ class DatabaseView:
         self.databaseViewWindow.geometry("1200x600")
         self.databaseViewWindow.wm_title("Database View")
 
-        # Set the background color
+        
         self.databaseViewWindow.configure(bg="LightSteelBlue1")
 
         # Label widget
@@ -708,6 +700,67 @@ class DatabaseView:
 
         # Reverse the sorting order for the next click
         self.databaseView.heading(column, command=lambda: self.sort_column(column, not reverse))
+
+
+    def generate_pdf(self, values):
+        # Ask the user for the download location
+        file_path = tkinter.filedialog.asksaveasfilename(defaultextension=".pdf")
+        if not file_path:
+            # User canceled the save dialog
+            return
+
+        # Set up the document
+        doc = SimpleDocTemplate(file_path, pagesize=letter)
+        styles = getSampleStyleSheet()
+        content = []
+
+        # Add the report title
+        title = Paragraph("<b>Patient Report</b>", styles["Title"])
+        content.append(title)
+
+        # Add the current date
+        current_date = date.today().strftime("%B %d, %Y")
+        date_label_style = ParagraphStyle("DateLabelStyle", parent=styles["Normal"], alignment=1)  # Center alignment
+        date_label = Paragraph(current_date, date_label_style)
+        content.append(date_label)
+
+        # Add doctor's information
+        doctor_name = "Dr. Deepa Joshi"
+        credentials = "Homeopath"
+        clinic_address = "123 Main Street, City"
+        phone_number = "123-456-7890"
+
+        doctor_info = [
+            ("Doctor:", doctor_name),
+            ("Credentials:", credentials),
+            ("Clinic Address:", clinic_address),
+            ("Phone Number:", phone_number)
+        ]
+        doctor_info_style = ParagraphStyle("DoctorInfoStyle", parent=styles["Normal"], alignment=2)  # Right alignment
+        for label, value in doctor_info:
+            value_text = Paragraph(str(value), doctor_info_style)  # Use the custom style for right alignment
+            content.append(value_text)
+
+        # Add patient data
+        data_labels = ["ID:", "Name:", "DOB:", "Gender:", "Symptoms:", "Rubrics:", "Medicine:", "Notes:"]
+        data_values = [str(values[0]), f"{values[1]} {values[2]}", str(values[3]), values[6], values[10], values[11], values[12], values[13]]  # Convert integer values to strings
+
+        for label, value in zip(data_labels, data_values):
+            label_text = Paragraph(f"<b>{label}</b>", styles["Normal"])
+            value_text = Paragraph(str(value), styles["Normal"])
+            content.append(label_text)
+            content.append(value_text)
+
+        # Add signature space for the doctor
+        signature_label_style = ParagraphStyle("SignatureLabelStyle", parent=styles["Normal"], alignment=0)  # Left alignment
+        signature_label = Paragraph("<b>Doctor's Signature:</b>", signature_label_style)
+        content.append(signature_label)
+
+        # Build the PDF document
+        doc.build(content)
+
+        
+        tkinter.messagebox.showinfo("PDF Created", "The PDF report has been created successfully.")
 
 
     def on_row_selected(self, event):
@@ -982,12 +1035,6 @@ class HomePage:
     def Update(self):
         self.updateWindow = SearchDeleteWindow("Update")
 
-    # def updateName(self):
-    #     if self.nameEntry.get():
-    #         self.updateWindow = UpdateWindow(self.nameEntry.get())
-    #         self.updateWindow.destroy(self)
-    #     else:
-    #         tkinter.messagebox.showwarning("Invalid Input", "Please enter a name.")
     
 
     def Search(self):
